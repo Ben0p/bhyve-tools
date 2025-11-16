@@ -58,11 +58,11 @@ class Bhyve():
         )
         self.devices = response.json()
         
-    
+
     def zone_active(self) -> bool:
-        return any(
-            device.get('status', {})
-                .get('watering_status', {})
-                .get('status') == 'watering_in_progress'
-            for device in self.devices
-        )
+        for device in self.devices:
+            status = device.get('status') or {}
+            watering = status.get('watering_status') or {}
+            if watering.get('status') == 'watering_in_progress':
+                return True
+        return False
