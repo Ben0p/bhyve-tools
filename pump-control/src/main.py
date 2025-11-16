@@ -1,5 +1,4 @@
-from services import ENV, LOGGER
-from services.bhyve import Bhyve
+from services import ENV, LOGGER, Bhyve
 import time
 import requests
 
