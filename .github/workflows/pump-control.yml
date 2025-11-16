@@ -1,4 +1,4 @@
-name: Build and push bhyve-pump-control image
+name: pump-control
 
 on:
   push:
