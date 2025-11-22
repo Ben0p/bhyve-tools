@@ -1,6 +1,7 @@
+import requests
 from requests import Session
 import time
-from pprint import pprint
+from .environment import ENV, LOGGER
 
 
 '''
@@ -52,12 +53,16 @@ class Bhyve():
     def get_devices(self) -> None:
         url = f"{self.API_HOST}{self.DEVICES_PATH}"
         params={"t": str(time.time())}
-        response = self._session.get(
-            url=url,
-            params=params
-        )
-        self.devices = response.json()
-        
+        try:
+            response = self._session.get(
+                url=url,
+                params=params
+            )
+            self.devices = response.json()
+        except requests.exceptions.ConnectionError:
+            LOGGER.warning("Byhve connection error.")
+            self.devices = []
+            
 
     def zone_active(self) -> bool:
         for device in self.devices:

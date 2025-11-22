@@ -19,7 +19,10 @@ def main():
         bhyve.get_devices()
         zone_active = bhyve.zone_active()
         if zone_active:
-            requests.get(f"http://{ENV.SHELLY_PRO_1PM_HOST}/relay/0?turn=on&timer={ENV.SHELLY_PRO_1PM_FAILSAFE_SECONDS}")
+            try:
+                requests.get(f"http://{ENV.SHELLY_PRO_1PM_HOST}/relay/0?turn=on&timer={ENV.SHELLY_PRO_1PM_FAILSAFE_SECONDS}")
+            except:
+                LOGGER.warning("Shelly Pro1PM Relay connection error, pump relay will turn off.")
         if zone_active != previous_zone_active:
             if zone_active:
                 LOGGER.info("A Bhyve zone is now active, requested the pump relay to turn on...")
